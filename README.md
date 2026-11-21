@@ -2,6 +2,8 @@
 
 Firmware for the dsPIC33EP256MC504. The project includes modules for ADC, GPIO, interrupts, DMA, and timers, with a simple application entry point.
 
+[![Validation](https://github.com/svazqz/dsPIC33_Firmware/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/svazqz/dsPIC33_Firmware/actions/workflows/ci.yml)
+
 [Quick start](#quick-start) · [Validation](#validation) · [Project layout](#project-layout) · [Reference](#reference)
 
 ## Quick start

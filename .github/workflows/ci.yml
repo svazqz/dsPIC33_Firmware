@@ -1,0 +1,35 @@
+name: "Validation"
+on:
+  pull_request: {}
+  push:
+    branches:
+      - "main"
+  workflow_dispatch: {}
+permissions:
+  contents: "read"
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+  cancel-in-progress: true
+jobs:
+  project:
+    name: "MPLAB project checks"
+    runs-on: "ubuntu-24.04"
+    timeout-minutes: 5
+    steps:
+      - name: "Check out source"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: "Validate MPLAB metadata"
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          from xml.etree import ElementTree
+
+          root = ElementTree.parse('nbproject/configurations.xml')
+          assert any(node.text == 'dsPIC33EP256MC504' for node in root.iter('targetDevice'))
+          ElementTree.parse('nbproject/project.xml')
+          assert Path('main.c').is_file()
+          for target in ('build:', 'clean:', 'all:'):
+              assert target in Path('Makefile').read_text()
+          PYCODE
