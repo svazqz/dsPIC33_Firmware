@@ -16,7 +16,7 @@ jobs:
   project:
     name: "MPLAB project checks"
     runs-on: "ubuntu-24.04"
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: "Check out source"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -35,3 +35,10 @@ jobs:
           for target in ('build:', 'clean:', 'all:'):
               assert target in Path('Makefile').read_text()
           PYCODE
+      - name: "Run host firmware unit tests in Docker"
+        shell: bash
+        run: |
+          set -o pipefail
+          docker run --rm --network none \
+            --mount "type=bind,source=$GITHUB_WORKSPACE,target=/src,readonly" \
+            gcc:14-bookworm sh /src/tests/run-container-tests.sh | tee -a "$GITHUB_STEP_SUMMARY"
