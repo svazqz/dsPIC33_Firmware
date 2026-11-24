@@ -26,3 +26,7 @@ Build in MPLAB X, then test pin mappings, clocks, interrupts, and timing on the 
 ## Reference
 
 Read the [project reference](README.reference.md) for detailed examples, configuration, and original notes.
+
+## License
+
+Original project code is available under the [MIT License](LICENSE). Third-party components retain their own terms.
